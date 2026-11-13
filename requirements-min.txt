@@ -1,0 +1,3 @@
+# Minimal deps for S0. Full pin (pip freeze) is added after the first working run.
+numpy
+pytest

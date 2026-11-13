@@ -1,0 +1,13 @@
+[project]
+name = "qrd"
+version = "0.0.1"
+description = "Robustness of INT8-quantized object detectors under image corruptions"
+requires-python = ">=3.10"
+dependencies = ["numpy"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
