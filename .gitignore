@@ -1,0 +1,14 @@
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+*.egg-info/
+data/*
+!data/splits/
+checkpoints/
+*.pt
+*.pth
+*.onnx
+*.pte
+.env
+main.py
