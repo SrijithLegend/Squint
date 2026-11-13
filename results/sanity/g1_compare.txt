@@ -1,0 +1,4 @@
+ORT executed graph: {'QuantizeLinear': 29, 'QLinearConv': 98, 'QLinearAdd': 10, 'QLinearGlobalAveragePool': 8, 'QLinearMul': 8, 'QLinearConcat': 2} | ort 1.27.0
+RESULT fp32_torch: n_img=100 mAP=0.2841 AP50=0.5084
+RESULT fp32_ort: n_img=100 mAP=0.2841 AP50=0.5084
+RESULT int8_ort: n_img=100 mAP=0.2618 AP50=0.4756
