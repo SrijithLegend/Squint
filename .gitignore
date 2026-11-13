@@ -12,3 +12,4 @@ checkpoints/
 *.pte
 .env
 main.py
+data/coco/
