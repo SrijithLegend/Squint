@@ -1,0 +1,6 @@
+out_dir: data/ckpt
+epochs: 3
+batch: 16
+lr: 0.002
+wd: 0.00004
+workers: 4

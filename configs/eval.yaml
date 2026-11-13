@@ -1,0 +1,25 @@
+# INITIAL severities (CLAUDE.md section 8). To be tuned on DEV only, then frozen.
+frozen: false
+test_subset_size: 1000
+count_threshold: 0.5
+corruptions:
+  gaussian_blur:
+    - {sigma: 1.0}
+    - {sigma: 2.0}
+    - {sigma: 3.0}
+    - {sigma: 4.0}
+  gaussian_noise:
+    - {sigma: 0.04}
+    - {sigma: 0.08}
+    - {sigma: 0.12}
+    - {sigma: 0.18}
+  low_light:
+    - {brightness: 0.6,  gamma: 1.5, peak: 60.0, read_sigma: 0.01}
+    - {brightness: 0.4,  gamma: 1.5, peak: 60.0, read_sigma: 0.01}
+    - {brightness: 0.25, gamma: 1.5, peak: 60.0, read_sigma: 0.01}
+    - {brightness: 0.15, gamma: 1.5, peak: 60.0, read_sigma: 0.01}
+  jpeg:
+    - {quality: 50}
+    - {quality: 30}
+    - {quality: 15}
+    - {quality: 8}
