@@ -85,5 +85,10 @@ class Annotations:
         b[:, 2:] += b[:, :2]
         return b
 
+    def crowd_xyxy(self, i):
+        b = np.array([x["bbox"] for x in self.by_img.get(i, []) if x["iscrowd"]], dtype=np.float32).reshape(-1, 4)
+        b[:, 2:] += b[:, :2]
+        return b
+
     def count(self, i):
         return sum(1 for x in self.by_img.get(i, []) if not x["iscrowd"])
