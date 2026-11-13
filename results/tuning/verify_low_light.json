@@ -1,0 +1,45 @@
+{
+ "n": 500,
+ "points": [
+  {
+   "params": {
+    "brightness": 0.489,
+    "gamma": 1.5,
+    "peak": 60.0,
+    "read_sigma": 0.01
+   },
+   "mAP": 0.21450803523544842,
+   "count_mae": 2.898
+  },
+  {
+   "params": {
+    "brightness": 0.278,
+    "gamma": 1.5,
+    "peak": 60.0,
+    "read_sigma": 0.01
+   },
+   "mAP": 0.16163521615433765,
+   "count_mae": 3.18
+  },
+  {
+   "params": {
+    "brightness": 0.201,
+    "gamma": 1.5,
+    "peak": 60.0,
+    "read_sigma": 0.01
+   },
+   "mAP": 0.11080528838003942,
+   "count_mae": 3.37
+  },
+  {
+   "params": {
+    "brightness": 0.152,
+    "gamma": 1.5,
+    "peak": 60.0,
+    "read_sigma": 0.01
+   },
+   "mAP": 0.0551090804836123,
+   "count_mae": 3.592
+  }
+ ]
+}

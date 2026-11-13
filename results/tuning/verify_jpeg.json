@@ -1,0 +1,33 @@
+{
+ "n": 500,
+ "points": [
+  {
+   "params": {
+    "quality": 10
+   },
+   "mAP": 0.2202639292081334,
+   "count_mae": 2.862
+  },
+  {
+   "params": {
+    "quality": 6
+   },
+   "mAP": 0.17191142835263185,
+   "count_mae": 3.104
+  },
+  {
+   "params": {
+    "quality": 4
+   },
+   "mAP": 0.11619654237599132,
+   "count_mae": 3.386
+  },
+  {
+   "params": {
+    "quality": 2
+   },
+   "mAP": 0.05586958200543945,
+   "count_mae": 3.732
+  }
+ ]
+}

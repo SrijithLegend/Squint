@@ -1,3 +1,10 @@
-# Minimal deps for S0. Full pin (pip freeze) is added after the first working run.
+torch
+torchvision
+onnx
+onnxruntime
 numpy
+opencv-python
+pycocotools
+pyyaml
+matplotlib
 pytest

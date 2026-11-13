@@ -73,11 +73,20 @@ class Annotations:
     """Person annotations for one split's source json, indexed by image id."""
 
     def __init__(self, split):
-        a = _ann("val" if split == "test" else "train")
+        # Cache only this split's person annotations: the full COCO json costs GBs of RAM when parsed.
+        cache = Path("data/cache") / f"ann_{split}.json"
+        if cache.exists():
+            rows = json.load(open(cache))
+        else:
+            ids = set(load_split(split))
+            a = _ann("val" if split == "test" else "train")
+            rows = [x for x in a["annotations"] if x["category_id"] == 1 and x["image_id"] in ids]
+            del a
+            cache.parent.mkdir(parents=True, exist_ok=True)
+            json.dump(rows, open(cache, "w"))
         self.by_img = {}
-        for x in a["annotations"]:
-            if x["category_id"] == 1:
-                self.by_img.setdefault(x["image_id"], []).append(x)
+        for x in rows:
+            self.by_img.setdefault(x["image_id"], []).append(x)
 
     def boxes_xyxy(self, i):
         b = [x["bbox"] for x in self.by_img.get(i, []) if not x["iscrowd"]]

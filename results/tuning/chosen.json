@@ -1,0 +1,73 @@
+{
+ "clean_dev_mAP_250": 0.25716821483199553,
+ "chosen": {
+  "gaussian_blur": [
+   {
+    "sigma": 3.485
+   },
+   {
+    "sigma": 5.582
+   },
+   {
+    "sigma": 8.065
+   },
+   {
+    "sigma": 11.724
+   }
+  ],
+  "gaussian_noise": [
+   {
+    "sigma": 0.131
+   },
+   {
+    "sigma": 0.213
+   },
+   {
+    "sigma": 0.295
+   },
+   {
+    "sigma": 0.412
+   }
+  ],
+  "low_light": [
+   {
+    "brightness": 0.489,
+    "gamma": 1.5,
+    "peak": 60.0,
+    "read_sigma": 0.01
+   },
+   {
+    "brightness": 0.278,
+    "gamma": 1.5,
+    "peak": 60.0,
+    "read_sigma": 0.01
+   },
+   {
+    "brightness": 0.201,
+    "gamma": 1.5,
+    "peak": 60.0,
+    "read_sigma": 0.01
+   },
+   {
+    "brightness": 0.152,
+    "gamma": 1.5,
+    "peak": 60.0,
+    "read_sigma": 0.01
+   }
+  ],
+  "jpeg": [
+   {
+    "quality": 10
+   },
+   {
+    "quality": 6
+   },
+   {
+    "quality": 4
+   },
+   {
+    "quality": 2
+   }
+  ]
+ }
+}
