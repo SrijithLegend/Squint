@@ -33,6 +33,10 @@ class PersonSet(torch.utils.data.Dataset):
         return x, {"boxes": torch.from_numpy(b).float().reshape(-1, 4), "labels": torch.ones(len(b), dtype=torch.int64)}
 
 
+def _collate(b):
+    return tuple(zip(*b))
+
+
 def run(cfg_path="configs/train.yaml", seed=0):
     cfg = yaml.safe_load(open(cfg_path))
     out = Path(cfg["out_dir"]) / f"fp32_seed{seed}"
@@ -52,7 +56,8 @@ def run(cfg_path="configs/train.yaml", seed=0):
         print(f"resumed from {ck[-1]}", flush=True)
     g = torch.Generator().manual_seed(seed)
     dl = torch.utils.data.DataLoader(PersonSet("train", seed), batch_size=cfg["batch"], shuffle=True, generator=g,
-                                     num_workers=cfg["workers"], collate_fn=lambda b: tuple(zip(*b)), drop_last=True)
+                                     num_workers=cfg["workers"], collate_fn=_collate, drop_last=True)
+    scaler = torch.amp.GradScaler(enabled=dev == "cuda")
     log = []
     for ep in range(start, cfg["epochs"]):
         m.train()
@@ -62,8 +67,9 @@ def run(cfg_path="configs/train.yaml", seed=0):
         t, tot, n = time.time(), 0.0, 0
         for xs, ts in dl:
             xs = [x.to(dev) for x in xs]; ts = [{k: v.to(dev) for k, v in d.items()} for d in ts]
-            loss = sum(m(xs, ts).values())
-            opt.zero_grad(); loss.backward(); opt.step()
+            with torch.autocast(dev, enabled=dev == "cuda"):
+                loss = sum(m(xs, ts).values())
+            opt.zero_grad(); scaler.scale(loss).backward(); scaler.step(opt); scaler.update()
             tot += loss.item(); n += 1
             if n % 20 == 0:
                 print(f"ep{ep} it{n} loss {tot/n:.4f} {time.time()-t:.0f}s", flush=True)
