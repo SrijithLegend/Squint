@@ -16,3 +16,9 @@ Every gate decision, with reason and date.
 | 2026-11-14 | S3 | Count threshold chosen on dev: t = 0.25 (FP32 seed 0, dev clean, 500 images: count-MAE 1.786 vs 2.650 at t = 0.5); stored as `count_threshold_dev` | CLAUDE.md says "maximize count-MAE", read as minimize. Applied unchanged to all variants. |
 | 2026-11-14 | S4 | Test grid launched (3 parallel processes, one per seed, FP32 + PTQ each; 4 threads each) on the frozen config. Approved by the user (Option 1). | Measured cost about 270 s per condition per process (about 77 min total). |
 | 2026-11-14 | S2 | Infrastructure fixes: Annotations now cache per-split person annotations (parsing full COCO json ran out of memory when 5 processes ran at once); train image 382103 was a 0-byte file from an interrupted download and was re-fetched | No effect on splits or results. |
+
+## 2026-11-14 — S4 stats, results, release
+- Bootstrap stats: fixed a memory leak in `load_dets` (npz re-decompressed per access) and made the cache per-unit; fixed a `bias@t` comprehension bug found at final aggregation. Ran one process at a time (low commit memory).
+- Pre-registered H1 decision: not supported (`results/stats.json`, `h1_decision`). Mixed: INT8 loses extra mAP in low light at severities 1-3; elsewhere the gap is zero or negative. Reported as is; no severities or thresholds changed after test runs.
+- QAT not implemented; H2 dropped (PTQ only). No ablations run.
+- Latency measured on laptop CPU after stats finished (quiet CPU). Fresh-clone reproduction not yet run.
