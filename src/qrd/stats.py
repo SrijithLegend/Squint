@@ -4,6 +4,7 @@ mAP bootstrap is done by weighting images (multiplicity from the resample) over 
 all detections: equal to duplicating images, but no per-resample COCOeval. Validated against pycocotools in tests.
 """
 import contextlib
+import gc
 import json
 import io
 
@@ -17,8 +18,8 @@ REC = np.linspace(0, 1, 101)
 
 def load_dets(path):
     z = np.load(path)
-    ids, off = z["ids"].tolist(), z["off"]
-    return ids, [(z["boxes"][off[k]:off[k + 1]], z["scores"][off[k]:off[k + 1]]) for k in range(len(ids))]
+    ids, off, boxes, scores = z["ids"].tolist(), z["off"], z["boxes"], z["scores"]  # read each array ONCE (npz re-decompresses per access)
+    return ids, [(boxes[off[k]:off[k + 1]].copy(), scores[off[k]:off[k + 1]].copy()) for k in range(len(ids))]
 
 
 class ApBoot:
@@ -105,28 +106,36 @@ def gap_curve(fp_vals, int_vals, sign):
 
 # ---------------------------------------------------------------- full analysis (reads results/raw + data/dets)
 def analyze(split="test", seeds=(0, 1, 2), out="results/stats.json", b_map=200, b_cnt=1000, boot_seed=12345,
-            models=("fp32", "ptq_int8")):
+            models=("fp32", "ptq_int8"), boot_only=None, limit=None):
     import pickle
     from pathlib import Path
 
     import yaml
 
-    from . import evaluate
+    from . import corruptions
     ids = data.load_split(split); ann = data.Annotations(split); n = len(ids)
     gt = {i: ann.boxes_xyxy(i) for i in ids}; crowd = {i: ann.crowd_xyxy(i) for i in ids}
     gtn = np.array([len(gt[i]) for i in ids], float)
     cfg = yaml.safe_load(open("configs/eval.yaml"))
     ts = [0.5] + ([cfg["count_threshold_dev"]] if cfg.get("count_threshold_dev") else [])
     W = resample_weights(n, b_cnt, boot_seed)  # paired: one matrix for every model/seed/condition
-    conds = evaluate.all_conditions()
-    cache = Path("data/cache") / f"boot_{split}.pkl"
-    store = pickle.load(open(cache, "rb")) if cache.exists() else {}
+    conds = ["clean"] + [f"{c}:{v}" for c in corruptions.NAMES for v in (1, 2, 3, 4)]
+    store, new = {}, 0
+    cpath = lambda s: Path("data/cache") / f"boot_{split}_s{s}.pkl"  # one cache per seed so seeds can run in parallel
+    for s in seeds:
+        if cpath(s).exists():
+            store.update(pickle.load(open(cpath(s), "rb")))
     for m in models:
         for s in seeds:
+            if boot_only is not None and s != boot_only:
+                continue
             for c in conds:
                 key = (m, s, c, tuple(ts), b_map, b_cnt, boot_seed)
                 if key in store:
                     continue
+                if limit is not None and new >= limit:
+                    return "more"  # worker exits so its memory is returned to the OS; the driver loop restarts it
+                new += 1
                 pids, preds = load_dets(f"data/dets/{split}_{m}_s{s}_{c.replace(':', '_')}.npz")
                 assert pids == ids, "detections were made on a different image list"
                 ab = ApBoot(ids, preds, gt, crowd)
@@ -140,10 +149,14 @@ def analyze(split="test", seeds=(0, 1, 2), out="results/stats.json", b_map=200, 
                     r[f"mae_b@{t}"] = boot_count_mae(np.abs(e), W)
                     r[f"bias_b@{t}"] = (W @ e) / W.sum(1)
                 store[key] = r
+                del ab, preds
+                gc.collect()
                 print("boot", m, s, c, flush=True)
-        pickle.dump(store, open(cache, "wb"))
+                pickle.dump({k: v for k, v in store.items() if k[1] == s}, open(cpath(s), "wb"))
+    if boot_only is not None:
+        return None
     g = lambda m, s, c: store[(m, s, c, tuple(ts), b_map, b_cnt, boot_seed)]
-    metrics_ = [("mAP", b_map), ("AP50", b_map)] + [(f"mae@{t}", b_cnt) for t in ts] + [(f"bias@{t}", b_cnt)]
+    metrics_ = [("mAP", b_map), ("AP50", b_map)] + [(f"mae@{t}", b_cnt) for t in ts] + [(f"bias@{t}", b_cnt) for t in ts]
     res = {"split": split, "n_images": n, "seeds": list(seeds), "b_map": b_map, "b_count": b_cnt, "boot_seed": boot_seed,
            "thresholds": ts, "conditions": {}, "gap": {}}
     for c in conds:
@@ -186,5 +199,10 @@ def analyze(split="test", seeds=(0, 1, 2), out="results/stats.json", b_map=200, 
 
 
 if __name__ == "__main__":
-    r = analyze()
+    import sys
+    r = analyze(boot_only=int(sys.argv[1]) if len(sys.argv) > 1 else None, limit=int(sys.argv[2]) if len(sys.argv) > 2 else None)
+    if r == "more":
+        sys.exit(3)
+    if r is None:
+        sys.exit(0)
     print(r["h1_decision"], r["h1_supported_by"])
