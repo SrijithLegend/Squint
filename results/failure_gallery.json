@@ -1,0 +1,74 @@
+[
+ {
+  "image_id": 100238,
+  "fp32_count": 3,
+  "int8_count": 1,
+  "gt": 4
+ },
+ {
+  "image_id": 363188,
+  "fp32_count": 3,
+  "int8_count": 1,
+  "gt": 13
+ },
+ {
+  "image_id": 520009,
+  "fp32_count": 0,
+  "int8_count": 2,
+  "gt": 3
+ },
+ {
+  "image_id": 139,
+  "fp32_count": 0,
+  "int8_count": 1,
+  "gt": 2
+ },
+ {
+  "image_id": 2473,
+  "fp32_count": 0,
+  "int8_count": 1,
+  "gt": 4
+ },
+ {
+  "image_id": 3255,
+  "fp32_count": 0,
+  "int8_count": 1,
+  "gt": 6
+ },
+ {
+  "image_id": 4765,
+  "fp32_count": 0,
+  "int8_count": 1,
+  "gt": 1
+ },
+ {
+  "image_id": 5037,
+  "fp32_count": 0,
+  "int8_count": 1,
+  "gt": 7
+ },
+ {
+  "image_id": 5193,
+  "fp32_count": 0,
+  "int8_count": 1,
+  "gt": 6
+ },
+ {
+  "image_id": 5586,
+  "fp32_count": 0,
+  "int8_count": 1,
+  "gt": 13
+ },
+ {
+  "image_id": 6460,
+  "fp32_count": 0,
+  "int8_count": 1,
+  "gt": 1
+ },
+ {
+  "image_id": 6471,
+  "fp32_count": 0,
+  "int8_count": 1,
+  "gt": 10
+ }
+]

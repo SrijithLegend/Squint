@@ -1,0 +1,55 @@
+{
+ "device": "laptop CPU (not an edge device)",
+ "cpu": "13th Gen Intel(R) Core(TM) i5-13420H",
+ "threads": 4,
+ "batch": 1,
+ "torch": "2.14.1+cu130",
+ "onnxruntime": "1.27.0",
+ "variants": {
+  "fp32_torch": {
+   "size_mb": 14.046083,
+   "raw_network": {
+    "median_ms": 59.384700001828605,
+    "p95_ms": 74.13413000140281,
+    "runs": 200,
+    "warmup": 20
+   },
+   "end_to_end": {
+    "median_ms": 147.69909999813535,
+    "p95_ms": 457.09298000074307,
+    "runs": 200,
+    "warmup": 20
+   }
+  },
+  "fp32_ort": {
+   "size_mb": 13.820162,
+   "raw_network": {
+    "median_ms": 28.390600000420818,
+    "p95_ms": 98.14700499991878,
+    "runs": 200,
+    "warmup": 20
+   },
+   "end_to_end": {
+    "median_ms": 68.31769999917015,
+    "p95_ms": 74.81683499427162,
+    "runs": 200,
+    "warmup": 20
+   }
+  },
+  "int8_ort": {
+   "size_mb": 3.908967,
+   "raw_network": {
+    "median_ms": 17.71999999982654,
+    "p95_ms": 21.514200000092387,
+    "runs": 200,
+    "warmup": 20
+   },
+   "end_to_end": {
+    "median_ms": 67.90705000094022,
+    "p95_ms": 72.69937999699323,
+    "runs": 200,
+    "warmup": 20
+   }
+  }
+ }
+}
