@@ -3,6 +3,7 @@
 frozen: true
 test_subset_size: 1000
 count_threshold: 0.5
+count_threshold_dev: 0.25   # argmin dev count-MAE, FP32 seed0 clean, 500 dev images (results/dev/); applied unchanged to all variants
 corruptions:
   gaussian_blur:
   - sigma: 3.485
