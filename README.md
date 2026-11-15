@@ -10,6 +10,7 @@ for a lightweight people detector and counter.
 ![Python](https://img.shields.io/badge/python-3.10%2B-blue)
 ![PyTorch](https://img.shields.io/badge/PyTorch-2.x-ee4c2c)
 ![ONNX Runtime](https://img.shields.io/badge/ONNX%20Runtime-1.27.0-005ced)
+![License](https://img.shields.io/badge/license-MIT-green)
 ![Dataset](https://img.shields.io/badge/data-COCO%202017%20(person)-informational)
 ![Status](https://img.shields.io/badge/study-complete%20(PTQ%20only)-success)
 
@@ -197,7 +198,7 @@ At low light severity 4, INT8 often emits one near-image-sized box where FP32 ou
 
 ## 📜 Licenses and data terms
 
-- **Code:** no license file chosen yet (not measured: user decision).
+- **Code:** [MIT](LICENSE). Data and weights are covered separately below.
 - **COCO:** annotations CC BY 4.0, images per Flickr terms. `UNVERIFIED:` confirm at cocodataset.org/#termsofuse.
 - **Weights:** follow torchvision's licensing. `UNVERIFIED:` check the weights license before redistributing.
 
