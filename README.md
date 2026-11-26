@@ -167,17 +167,25 @@ Makefile      make data | train | quant | eval | bench | stats | report | test |
 
 ## 🚀 Reproduce
 
+Tested on Python 3.12. `requirements.txt` pins the versions that produced the committed results; `requirements-min.txt` is the unpinned short list.
+
 ```bash
-pip install -r requirements.txt     # pinned; requirements-min.txt is the short list
-python -m pytest -q                 # 21 tests
-make data                           # needs COCO annotations in data/coco/annotations/
-make train                          # resume-able, checkpoints in data/ckpt/ (gitignored)
-make quant eval bench stats report
+python -m venv .venv
+source .venv/bin/activate           # Windows: .venv\Scripts\activate
+pip install -r requirements.txt
+python -m pytest -q                 # 21 tests, ~20 s; no GPU or dataset needed
+
+make data                           # downloads the images in data/splits/*.json; needs COCO annotations in data/coco/annotations/
+make train                          # resume-able, checkpoints every epoch in data/ckpt/ (gitignored)
+make quant eval bench               # ONNX + INT8, the 2 x 17 x 3 test grid, size/latency
+make stats report                   # bootstrap CIs, tables, figures
 ```
 
-`make all` runs every stage. Checkpoints, ONNX files, raw detections (`data/dets`) and caches are gitignored, so the CIs need `make eval` outputs to regenerate.
+**Inspect without re-running anything:** `results/raw/` (103 per-run JSONs), `results/stats.json`, `results/latency.json` and every figure in `results/figures/` are committed.
 
-> ⚠️ A fresh-clone reproduction has not been run yet, so the "one command" claim is **unverified**.
+**Needs compute:** `make stats` rebuilds the confidence intervals from the raw detections in `data/dets/` (221 MB, gitignored), so regenerating them needs `make eval` first. Checkpoints, ONNX files and caches are gitignored too.
+
+> ⚠️ A full fresh-clone reproduction has **not** been run end to end. The test suite passes and the committed results are internally consistent, but the `make all` path from an empty clone is unverified.
 
 ## 🔎 Failure analysis
 
