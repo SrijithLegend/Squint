@@ -1,9 +1,12 @@
+# Short install list (no pins) - see requirements.txt for the exact versions used in results/.
+# opencv is used only for reading/writing images (corruption contact sheet, failure gallery),
+# so the headless build is enough; swap for opencv-python if you need GUI windows.
 torch
 torchvision
 onnx
 onnxruntime
 numpy
-opencv-python
+opencv-python-headless
 pycocotools
 pyyaml
 matplotlib

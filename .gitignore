@@ -13,3 +13,7 @@ checkpoints/
 .env
 main.py
 data/coco/
+
+# requirements.txt is the pinned source of truth for the environment that produced results/.
+# A uv.lock is generated locally by `uv lock` / `uv sync` and is not tracked.
+uv.lock

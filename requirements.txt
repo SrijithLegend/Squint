@@ -1,0 +1,21 @@
+# Pinned to the environment that produced everything in results/:
+#   Python 3.12.1, Windows x64. Training used a CUDA 13.0 build of torch;
+#   INT8 numbers came from ONNX Runtime 1.27.0 on CPU.
+#
+#   pip install -r requirements.txt
+#
+# To install the exact CUDA build instead of the default PyPI wheel:
+#   pip install torch==2.14.1 torchvision==0.29.1 --index-url https://download.pytorch.org/whl/cu130
+# For a CPU-only machine, drop the +cu130 index and use https://download.pytorch.org/whl/cpu.
+# requirements-min.txt lists the same packages without pins, for quick installs.
+
+torch==2.14.1
+torchvision==0.29.1
+onnx==1.23.2
+onnxruntime==1.27.0
+numpy==2.4.4
+opencv-python-headless==5.0.0.93
+pycocotools==2.0.11
+pyyaml==6.0.3
+matplotlib==3.11.0
+pytest==9.1.1

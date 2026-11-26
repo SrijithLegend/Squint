@@ -3,7 +3,21 @@ name = "qrd"
 version = "0.0.1"
 description = "Robustness of INT8-quantized object detectors under image corruptions"
 requires-python = ">=3.10"
-dependencies = ["numpy"]
+# Unpinned; requirements.txt carries the exact versions that produced results/.
+dependencies = [
+    "torch",
+    "torchvision",
+    "onnx",
+    "onnxruntime",
+    "numpy",
+    "opencv-python-headless",
+    "pycocotools",
+    "pyyaml",
+    "matplotlib",
+]
+
+[project.optional-dependencies]
+dev = ["pytest"]
 
 [tool.setuptools.packages.find]
 where = ["src"]
